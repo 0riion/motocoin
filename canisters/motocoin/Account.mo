@@ -8,4 +8,9 @@ import Nat32 "mo:base/Nat32";
 
 module {
     public type AccountSubaccount = Blob;
+
+    public type Account = {
+        owner : Principal;
+        subaccount : ?AccountSubaccount
+    };
 }
