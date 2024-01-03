@@ -13,4 +13,8 @@ module {
         owner : Principal;
         subaccount : ?AccountSubaccount
     };
+
+    func getDefaultSubaccount() : AccountSubaccount {
+        return Blob.fromArrayMut(Array.init(32, 0 : Nat8))
+    };
 }
