@@ -17,4 +17,10 @@ module {
     func getDefaultSubaccount() : AccountSubaccount {
         return Blob.fromArrayMut(Array.init(32, 0 : Nat8))
     };
+
+    public func areAccountsEqual(leftAccount : Account, rightAccount : Account) : Bool {
+        let leftSubaccount : AccountSubaccount = Option.get<AccountSubaccount>(leftAccount.subaccount, getDefaultSubaccount());
+        let rightSubaccount : AccountSubaccount = Option.get<AccountSubaccount>(rightAccount.subaccount, getDefaultSubaccount());
+        return Principal.equal(leftAccount.owner, rightAccount.owner) & & Blob.equal(leftSubaccount, rightSubaccount)
+    };
 }
