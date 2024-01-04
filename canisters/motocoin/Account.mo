@@ -23,4 +23,10 @@ module {
         let rightSubaccount : AccountSubaccount = Option.get<AccountSubaccount>(rightAccount.subaccount, getDefaultSubaccount());
         return Principal.equal(leftAccount.owner, rightAccount.owner) & & Blob.equal(leftSubaccount, rightSubaccount)
     };
+
+    public func calculateAccountHash(account : Account) : Nat32 {
+        let accountSubaccount : AccountSubaccount = Option.get<AccountSubaccount>(account.subaccount, getDefaultSubaccount());
+        let hashSum = Nat.add(Nat32.toNat(Principal.hash(account.owner)), Nat32.toNat(Blob.hash(accountSubaccount)));
+        return Nat32.fromNat(hashSum % (2 ** 32 - 1))
+    };
 }
