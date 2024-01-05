@@ -29,4 +29,8 @@ module {
         let hashSum = Nat.add(Nat32.toNat(Principal.hash(account.owner)), Nat32.toNat(Blob.hash(accountSubaccount)));
         return Nat32.fromNat(hashSum % (2 ** 32 - 1))
     };
+
+    public func doesAccountBelongToPrincipal(account : Account, principal : Principal) : Bool {
+        return Principal.equal(account.owner, principal)
+    }
 }
