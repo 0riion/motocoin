@@ -7,30 +7,29 @@ import Nat "mo:base/Nat";
 import Nat32 "mo:base/Nat32";
 
 module {
-    public type AccountSubaccount = Blob;
-
+    public type Subaccount = Blob;
     public type Account = {
         owner : Principal;
-        subaccount : ?AccountSubaccount
+        subaccount : ?Subaccount
     };
 
-    func getDefaultSubaccount() : AccountSubaccount {
-        return Blob.fromArrayMut(Array.init(32, 0 : Nat8))
+    func _getDefaultSubaccount() : Subaccount {
+        Blob.fromArrayMut(Array.init(32, 0 : Nat8))
     };
 
-    public func areAccountsEqual(leftAccount : Account, rightAccount : Account) : Bool {
-        let leftSubaccount : AccountSubaccount = Option.get<AccountSubaccount>(leftAccount.subaccount, getDefaultSubaccount());
-        let rightSubaccount : AccountSubaccount = Option.get<AccountSubaccount>(rightAccount.subaccount, getDefaultSubaccount());
-        return Principal.equal(leftAccount.owner, rightAccount.owner) & & Blob.equal(leftSubaccount, rightSubaccount)
+    public func accountsEqual(leftAccount : Account, rightAccount : Account) : Bool {
+        let leftSubaccount : Subaccount = Option.get<Subaccount>(leftAccount.subaccount, _getDefaultSubaccount());
+        let rightSubaccount : Subaccount = Option.get<Subaccount>(rightAccount.subaccount, _getDefaultSubaccount());
+        Principal.equal(leftAccount.owner, rightAccount.owner) and Blob.equal(leftSubaccount, rightSubaccount)
     };
 
-    public func calculateAccountHash(account : Account) : Nat32 {
-        let accountSubaccount : AccountSubaccount = Option.get<AccountSubaccount>(account.subaccount, getDefaultSubaccount());
+    public func accountsHash(account : Account) : Nat32 {
+        let accountSubaccount : Subaccount = Option.get<Subaccount>(account.subaccount, _getDefaultSubaccount());
         let hashSum = Nat.add(Nat32.toNat(Principal.hash(account.owner)), Nat32.toNat(Blob.hash(accountSubaccount)));
-        return Nat32.fromNat(hashSum % (2 ** 32 - 1))
+        Nat32.fromNat(hashSum % (2 ** 32 - 1))
     };
 
-    public func doesAccountBelongToPrincipal(account : Account, principal : Principal) : Bool {
-        return Principal.equal(account.owner, principal)
+    public func accountBelongToPrincipal(account : Account, principal : Principal) : Bool {
+        Principal.equal(account.owner, principal)
     }
 }
