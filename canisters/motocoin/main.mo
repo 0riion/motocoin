@@ -18,5 +18,9 @@ actor class MotoCoun() {
         var supply : Nat = 0
     };
 
-    var ledger = TrieMap.TrieMap<Account, Nat>(Account.accountsEqual, Account.accountsHash)
+    var ledger = TrieMap.TrieMap<Account, Nat>(Account.accountsEqual, Account.accountsHash);
+
+    public query func name() : async Text {
+        return coinData.name
+    };
 }
