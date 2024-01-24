@@ -20,7 +20,11 @@ actor class MotoCoun() {
 
     var ledger = TrieMap.TrieMap<Account, Nat>(Account.accountsEqual, Account.accountsHash);
 
-    public query func name() : async Text {
+    public query func getTokenName() : async Text {
         return coinData.name
+    };
+
+    public query func getTokenSymbol() : async Text {
+        return coinData.symbol
     };
 }
