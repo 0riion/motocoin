@@ -27,4 +27,15 @@ actor class MotoCoun() {
     public query func getTokenSymbol() : async Text {
         return coinData.symbol
     };
+
+    public query func getBalance(account : Account) : async (Nat) {
+        let userAccount : ?Nat = ledger.get(account);
+
+        switch (userAccount) {
+            case (null) { return 0 };
+            case (?account) {
+                return account
+            }
+        }
+    }
 }
