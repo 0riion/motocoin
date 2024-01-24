@@ -1,11 +1,20 @@
-actor {
-    stable var currentValue: Nat = 0;
+import TrieMap "mo:base/TrieMap";
+import Trie "mo:base/Trie";
+import Result "mo:base/Result";
+import Text "mo:base/Text";
+import Nat "mo:base/Nat";
+import Hash "mo:base/Hash";
+import Principal "mo:base/Principal";
 
-    public func increment(): async () {
-        currentValue += 1;
-    };
+import Account "Account";
+import RemoteCanisterActor "RemoteCanister"
 
-    public query func getValue(): async Nat {
-        currentValue;
+actor class MotoCoun() {
+    public type Account = Account.Account;
+
+    stable var coinData = {
+        name : Text = "MotoCoin";
+        symbol : Text = "MOC";
+        var supply : Nat = 0
     };
-};
+}
