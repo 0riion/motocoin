@@ -17,4 +17,6 @@ actor class MotoCoun() {
         symbol : Text = "MOC";
         var supply : Nat = 0
     };
+
+    var ledger = TrieMap.TrieMap<Account, Nat>(Account.accountsEqual, Account.accountsHash)
 }
