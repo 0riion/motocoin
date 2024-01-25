@@ -68,5 +68,21 @@ actor class MotoCoun() {
                 }
             }
         }
+    };
+
+    private func addBalance(toWallet : Account, amount : Nat) : async () {
+        let currentWalletBalance : ?Nat = ledger.get(toWallet);
+
+        switch (currentWalletBalance) {
+            case (null) {
+                ledger.put(toWallet, amount);
+                return ()
+            };
+
+            case (?xActBalance) {
+                ignore ledger.replace(toWallet, xActBalance + amount);
+                return ()
+            }
+        }
     }
 }
