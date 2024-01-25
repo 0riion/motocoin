@@ -37,5 +37,36 @@ actor class MotoCoun() {
                 return account
             }
         }
+    };
+
+    public shared ({ caller }) func transfer(sender : Account, receiver : Account, amount : Nat) : async Result.Result<(), Text> {
+        let senderBalance : ?Nat = ledger.get(sender);
+
+        switch (senderBalance) {
+            case (null) {
+                return #err("Your " # coinData.name # " balance is not enough!")
+            };
+
+            case (?senderBalance) {
+                if (senderBalance < amount) {
+                    return #err("Your " # coinData.name # " balance is not enough!")
+                };
+
+                ignore ledger.replace(sender, senderBalance - amount);
+
+                let recipientBalance : ?Nat = ledger.get(receiver);
+                switch (recipientBalance) {
+                    case (null) {
+                        ledger.put(receiver, amount);
+                        return #ok()
+                    };
+
+                    case (?recipientBalance) {
+                        ignore ledger.replace(receiver, recipientBalance + amount);
+                        return #ok()
+                    }
+                }
+            }
+        }
     }
 }
