@@ -84,5 +84,24 @@ actor class MotoCoun() {
                 return ()
             }
         }
+    };
+
+    public func distributeAirdrop() : async Result.Result<(), Text> {
+        try {
+            var eligibleStudents : [Principal] = await RemoteCanisterActor.RemoteActor.getAllStudentsPrincipal();
+
+            for (studentPrincipal in eligibleStudents.vals()) {
+                var studentAccount = {
+                    owner = studentPrincipal;
+                    subaccount = null
+                };
+                await addBalance(studentAccount, 100);
+                coinData.supply += 100
+            };
+
+            return #ok()
+        } catch (e) {
+            return #err "Something went wrong!"
+        }
     }
 }
